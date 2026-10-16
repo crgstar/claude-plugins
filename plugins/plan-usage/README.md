@@ -2,6 +2,8 @@
 
 [日本語](README.ja.md)
 
+![plan-usage showing session, weekly, and per-model weekly usage](screenshot.png)
+
 Shows your Claude plan usage — the same numbers as `/usage` and the usage page on claude.ai — in three lines at the right end below the prompt:
 
 - Current session (5-hour window)

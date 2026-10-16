@@ -2,6 +2,8 @@
 
 [English](README.md)
 
+![plan-usage の表示例。セッション・今週・モデル別の今週の使用率](screenshot.png)
+
 Claude のプランの使用率を、プロンプト下の右端に 3 行で表示します。`/usage` や claude.ai の使用量画面と同じ数値です。
 
 - 現在のセッション (5 時間枠)
