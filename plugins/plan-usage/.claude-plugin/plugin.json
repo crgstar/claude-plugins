@@ -1,0 +1,9 @@
+{
+  "name": "plan-usage",
+  "description": "Shows your Claude plan usage (session, weekly, and per-model weekly) in three lines at the right end below the prompt",
+  "author": {
+    "name": "crgstar"
+  },
+  "homepage": "https://github.com/crgstar/claude-plugins/tree/main/plugins/plan-usage",
+  "repository": "https://github.com/crgstar/claude-plugins"
+}

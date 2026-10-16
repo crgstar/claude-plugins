@@ -1,0 +1,14 @@
+{
+  "name": "crgstar",
+  "description": "Claude Code plugins by crgstar",
+  "owner": {
+    "name": "crgstar"
+  },
+  "plugins": [
+    {
+      "name": "plan-usage",
+      "source": "./plugins/plan-usage",
+      "description": "Shows your Claude plan usage (session, weekly, and per-model weekly) in three lines at the right end below the prompt"
+    }
+  ]
+}

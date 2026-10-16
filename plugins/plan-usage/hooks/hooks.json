@@ -1,0 +1,4 @@
+{
+  "description": "Keeps the plan usage drawn at the right end below the prompt",
+  "modules": ["./register.ts"]
+}
