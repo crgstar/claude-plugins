@@ -2,7 +2,7 @@
 
 [日本語](README.ja.md)
 
-![plan-usage showing session, weekly, and per-model weekly usage](screenshot.png)
+![plan-usage showing session, weekly, and per-model weekly usage](screenshot-en.png)
 
 Shows your Claude plan usage — the same numbers as `/usage` and the usage page on claude.ai — in three lines at the right end below the prompt:
 
@@ -28,4 +28,4 @@ claude plugin install plan-usage@crgstar
 
 - Usage is fetched from the same endpoint `/usage` uses (`https://api.anthropic.com/api/oauth/usage`). It is not a public API and may change or stop working without notice.
 - Requests are made at most once every 5 minutes, and the result is shared between concurrent sessions. On HTTP 429 it backs off for up to an hour.
-- Status messages (loading, fetch errors) are currently shown in Japanese.
+- Text is shown in Japanese or English. The `language` setting of Claude Code decides it when set (Japanese → Japanese, anything else → English); otherwise the system locale (`LC_ALL`, `LC_MESSAGES`, `LANG`) does.

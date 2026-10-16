@@ -2,6 +2,9 @@
 // 応答の limits[] がそのまま公式の「Current session / Current week (all models) / Current week (<モデル>)」
 // の並びになっているので、旧来の five_hour / seven_day は limits[] が無い応答の保険としてだけ読む
 
+import { MESSAGES } from './locale.ts'
+import type { Locale } from './locale.ts'
+
 export type UsageWindow = {
   title: string
   short: string
@@ -96,22 +99,20 @@ export const barCells = (percent: number, elapsed: number | undefined, width: nu
   return cells
 }
 
-const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土']
-
-// 同じ日なら「17:09」、違う日なら「10/20(火)」
-export const formatResetShort = (iso: string, nowMs: number): string => {
+// 同じ日なら「17:09」、違う日は言語ごとの日付表記 (ja「10/20(火)」、en「Oct 20 (Tue)」)
+export const formatResetShort = (iso: string, nowMs: number, locale: Locale): string => {
   const d = new Date(iso)
   if (Number.isNaN(d.getTime())) return ''
   const now = new Date(nowMs)
   const sameDay = d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate()
   if (sameDay) return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
-  return `${d.getMonth() + 1}/${d.getDate()}(${WEEKDAYS[d.getDay()]})`
+  return MESSAGES[locale].day(d.getMonth(), d.getDate(), d.getDay())
 }
 
 // 右端に常時出す 3 行の 1 行分。列を揃えるため、ラベルと使用率は全行の最大幅で詰める
 export type SummaryRow = { label: string; cells: Cell[]; percent: string; reset: string; level: Level }
 
-export const summaryRows = (windows: UsageWindow[], nowMs: number, barWidth: number): SummaryRow[] => {
+export const summaryRows = (windows: UsageWindow[], nowMs: number, barWidth: number, locale: Locale): SummaryRow[] => {
   const labelWidth = Math.max(0, ...windows.map((w) => w.short.length))
   return windows.map((w) => {
     const elapsed = elapsedRatio(w, nowMs)
@@ -119,7 +120,7 @@ export const summaryRows = (windows: UsageWindow[], nowMs: number, barWidth: num
       label: w.short.padEnd(labelWidth),
       cells: barCells(w.percent, elapsed, barWidth),
       percent: `${w.percent}%`.padStart(4),
-      reset: w.resetsAt ? formatResetShort(w.resetsAt, nowMs) : '',
+      reset: w.resetsAt ? formatResetShort(w.resetsAt, nowMs, locale) : '',
       level: paceLevel(w.percent, elapsed),
     }
   })

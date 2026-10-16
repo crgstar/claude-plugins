@@ -77,11 +77,13 @@ test('barCells は使用率で塗り、過ぎた割合の位置に目印を重�
   expect(barCells(100, 1, 3)).toEqual(['fill', 'fill', 'markOnFill'])
 })
 
-test('formatResetShort は同じ日なら 24 時間表記の時刻、違う日なら 月/日(曜)', () => {
+test('formatResetShort は同じ日なら 24 時間表記の時刻、違う日なら ja は 月/日(曜)、en は Mon D (曜)', () => {
   const now = new Date(2026, 9, 13, 15, 0).getTime()
-  expect(formatResetShort(new Date(2026, 9, 13, 17, 9).toISOString(), now)).toBe('17:09')
-  expect(formatResetShort(new Date(2026, 9, 20, 7, 0).toISOString(), now)).toBe('10/20(火)')
-  expect(formatResetShort('junk', now)).toBe('')
+  expect(formatResetShort(new Date(2026, 9, 13, 17, 9).toISOString(), now, 'ja')).toBe('17:09')
+  expect(formatResetShort(new Date(2026, 9, 13, 17, 9).toISOString(), now, 'en')).toBe('17:09')
+  expect(formatResetShort(new Date(2026, 9, 20, 7, 0).toISOString(), now, 'ja')).toBe('10/20(火)')
+  expect(formatResetShort(new Date(2026, 9, 20, 7, 0).toISOString(), now, 'en')).toBe('Oct 20 (Tue)')
+  expect(formatResetShort('junk', now, 'en')).toBe('')
 })
 
 test('summaryRows はラベルと使用率の幅を揃える', () => {
@@ -93,6 +95,7 @@ test('summaryRows はラベルと使用率の幅を揃える', () => {
     ],
     now,
     10,
+    'ja',
   )
   expect(rows.map((r) => [r.label, r.percent, r.reset, r.level])).toEqual([
     ['Session', ' 12%', '17:00', 'ok'],

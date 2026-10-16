@@ -1,4 +1,6 @@
 import type { RenderElement } from 'claude-code'
+import { MESSAGES } from './locale.ts'
+import type { Locale } from './locale.ts'
 import { summaryRows } from './usage.ts'
 import type { Cell, Level, UsageWindow } from './usage.ts'
 
@@ -24,6 +26,7 @@ export type SummaryInput = {
   windows: UsageWindow[]
   error?: string
   nowMs: number
+  locale: Locale
   // 同じ場所にもともと出ていたモード表示 (`focus` 等)。空なら行を足さない
   modes?: string
 }
@@ -38,7 +41,8 @@ const runs = (cells: Cell[]): { cell: Cell; length: number }[] =>
   }, [])
 
 export const drawSummary = ({ Box, Text }: SummaryElements, x: SummaryInput): RenderElement => {
-  const rows = summaryRows(x.windows, x.nowMs, BAR_WIDTH)
+  const rows = summaryRows(x.windows, x.nowMs, BAR_WIDTH, x.locale)
+  const m = MESSAGES[x.locale]
   const lines =
     rows.length > 0
       ? rows.map((r) =>
@@ -53,9 +57,9 @@ export const drawSummary = ({ Box, Text }: SummaryElements, x: SummaryInput): Re
             h(Text, { dimColor: true }, r.reset),
           ),
         )
-      : [h(Text, { dimColor: true }, x.error ? `取得失敗: ${x.error}` : '取得中…')]
+      : [h(Text, { dimColor: true }, x.error ? m.fetchFailed(x.error) : m.loading)]
   // 取得失敗でも直前の値は出し続け、失敗したことだけ下に添える
-  const note = rows.length > 0 && x.error ? [h(Text, { dimColor: true, wrap: 'truncate-end' }, `更新失敗: ${x.error}`)] : []
+  const note = rows.length > 0 && x.error ? [h(Text, { dimColor: true, wrap: 'truncate-end' }, m.updateFailed(x.error))] : []
   // h() の型は文字列や null も含む広い RenderNode だが、Box を渡したときは要素しか返らない
   const modes = x.modes ? [h(Text, { dimColor: true }, x.modes)] : []
   // 塊ごと右端に置かれるので、行頭は揃える。行ごとに右へ寄せるとリセット欄の長さで行頭がずれる

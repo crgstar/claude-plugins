@@ -1,4 +1,6 @@
 import type { EngineInterface, Register } from 'claude-code'
+import { pickLocale, posixLocaleOf } from './locale.ts'
+import type { Locale } from './locale.ts'
 import { decide, nextBackoff, overlayHeaderLimits, retryAfterMs } from './policy.ts'
 import type { Backoff, Cached, HeaderLimit } from './policy.ts'
 import { drawSummary } from './summary.ts'
@@ -18,6 +20,8 @@ let lastError: string | undefined
 let headerLimits: readonly HeaderLimit[] = []
 let nowMs = 0
 let inFlight = false
+// セッション開始時に決める。決まるまでの描画は英語にしておく
+let locale: Locale = 'en'
 
 const isCached = (v: unknown): v is Cached =>
   typeof v === 'object' && v !== null && Array.isArray((v as Cached).windows) && typeof (v as Cached).fetchedAtMs === 'number'
@@ -72,6 +76,16 @@ const refresh = async ($: EngineInterface): Promise<void> => {
 
 export const register: Register = (on) => {
   on('session.start', async ($, e, next) => {
+    // 言語が決められなくても使用率の取得は止めない。決められなければ既定の英語のまま描く
+    try {
+      const [settings, lcAll, lcMessages, lang] = await Promise.all([
+        $.settings.read() as Promise<{ language?: unknown }>,
+        $.env.get('LC_ALL'),
+        $.env.get('LC_MESSAGES'),
+        $.env.get('LANG'),
+      ])
+      locale = pickLocale(settings.language, posixLocaleOf(lcAll, lcMessages, lang))
+    } catch {}
     $.clock.every(TICK_MS, () => {
       void refresh($)
     })
@@ -96,6 +110,7 @@ export const register: Register = (on) => {
       windows: cached ? overlayHeaderLimits(cached.windows, headerLimits) : [],
       error: lastError,
       nowMs,
+      locale,
       // 元のモード表示は engine の目印として返り、木に入れ子にできないので、文字列で描き直す
       modes: e.props.modes.join(' & '),
     })
