@@ -8,7 +8,7 @@
     {
       "name": "plan-usage",
       "source": "./plugins/plan-usage",
-      "description": "Shows your Claude plan usage (session, weekly, and per-model weekly) in three lines at the right end below the prompt, or behind a button under the latest reply on mobile and in VS Code"
+      "description": "Shows your Claude plan usage (session, weekly, and per-model weekly) in three lines at the right end below the prompt"
     }
   ]
 }

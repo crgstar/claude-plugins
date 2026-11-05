@@ -6,7 +6,7 @@ crgstar 作の Claude Code プラグイン集です。
 
 | プラグイン | 説明 |
 |---|---|
-| [plan-usage](plugins/plan-usage) | プランの使用率を、プロンプト下の右端に 3 行で表示する (スマホと VS Code では最新の応答の下のボタンから開く) |
+| [plan-usage](plugins/plan-usage) | プランの使用率を、プロンプト下の右端に 3 行で表示する |
 
 ## インストール
 
