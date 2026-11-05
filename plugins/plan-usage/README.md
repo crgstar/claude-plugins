@@ -12,6 +12,8 @@ Shows your Claude plan usage — the same numbers as `/usage` and the usage page
 
 Each line has a bar, the percentage used, and the reset time. A mark on the bar shows how much of the window has elapsed, and the bar turns yellow when you are ahead of that pace and red near the limit.
 
+The Claude mobile app (Remote Control) and VS Code do not draw the area below the prompt. There, a 📊 button appears under Claude's latest reply instead; tap it to open or close the same lines. Opening them changes only what is drawn, not what Claude reads.
+
 ## Requirements
 
 - This plugin is a mod built on function hooks. Enable them with the `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1` environment variable (for example in the `env` field of `settings.json`).

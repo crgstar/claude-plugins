@@ -1,4 +1,4 @@
 {
-  "description": "Keeps the plan usage drawn at the right end below the prompt",
+  "description": "Keeps the plan usage drawn at the right end below the prompt, or behind a button under the latest reply where that area is not drawn",
   "modules": ["./register.ts"]
 }
