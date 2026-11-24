@@ -1,0 +1,10 @@
+{
+  "name": "session-delta",
+  "description": "Shows Edit and Write diffs side by side in the conversation, and a pane listing what changed in this session, in one turn, or on the branch, where ask attaches a file diff to your next prompt",
+  "author": {
+    "name": "crgstar"
+  },
+  "types": "./types/index.d.ts",
+  "homepage": "https://github.com/crgstar/claude-plugins/tree/main/plugins/session-delta",
+  "repository": "https://github.com/crgstar/claude-plugins"
+}
